@@ -60,7 +60,7 @@ def run_scripts(scripts_path: Path):
         engines.append(eng)
 
         eng.loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs,
-                  dcy, day, dd, lrate, dlr)
+                  dcy, day, dd, lrate, dlr, nargout=0)
 
     return engines
 
