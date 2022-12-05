@@ -1,39 +1,43 @@
 import itertools
 import sys
+import time
 from pathlib import Path
+from threading import Thread
 
 import matlab.engine as matlab
 
 # User defined values
 jj = 0
-st = 516
+st = 460
 fin2 = 517
-stf = 10
-finf = 10
-low = .04
+stf = 6
+finf = 6
+low = 0.002
 high = 1
 gsfact1 = 0.9
 dgs = 0.2
 dcy = 50
 dd = 20
 dlr = 0
-l2 = 0
+l2 = 0.0029
 
-cycles_st = 1100
+cycles_st = 300
 cycles_fin = 900
-cycles_delta = -50
-days_st = 1
-days_fin = 150
-days_delta = 1
-cells_st = 350
-cells_fin = 340
-cells_delta = 30
-lrate_st = 5
-lrate_fin = 8
-lrate_delta = -1
+cycles_delta = 50
+days_st = 90
+days_fin = 180
+days_delta = 30
+cells_st = 150
+cells_fin = 351
+cells_delta = 50
+lrate_st = 3
+lrate_fin = 9
+lrate_delta = 2
 gsfact_st = 7
-gsfact_fin = 8
-gsfact_delta = 1
+gsfact_fin = 9
+gsfact_delta = 2
+
+n_gpus = 3
 
 
 def generate_combinations():
@@ -51,24 +55,45 @@ def quit_all(engines: list):
     [eng.quit() for eng in engines]
 
 
+def join_threads(threads: list):
+    [thread.join() for thread in threads]
+
+
+def chunks(l, n):
+    """Yield n number of striped chunks from l."""
+    for i in range(0, n):
+        yield l[i::n]
+
+
 def run_scripts(scripts_path: Path):
     sys.path.insert(1, str(scripts_path))
 
     engines = []
-    for cycle, day, cell, lrate, gsfact in generate_combinations():
-        eng = matlab.start_matlab()
-        engines.append(eng)
+    threads = []
+    chunkz = chunks(generate_combinations(), n_gpus)
+    for idx, chunk in enumerate(chunkz):
+        def worker(igpu: int):
+            for cycles, day, cells, lrate, gsfact in chunk:
+                eng = matlab.start_matlab()
+                engines.append(eng)
 
-        eng.loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs,
-                  dcy, day, dd, lrate, dlr, nargout=0)
+                eng.loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs, cycles,
+                          dcy, day, dd, lrate, dlr, cells, l2, igpu, nargout=0)
+                eng.quit()
+                time.sleep(0.8)
 
-    return engines
+        thread = Thread(target=worker, args=(idx + 1,))
+        thread.start()
+        threads.append(thread)
+
+    return threads
 
 
 def main():
-    matlab_path = Path('C:/Users/Nick/PycharmProjects/matlab_script')
-    engines = run_scripts(scripts_path=matlab_path)
-    quit_all(engines=engines)
+    matlab_path = Path(r'C:\Users\sfous\Desktop\forex\nick\matlab_gpu_script')
+    threads = run_scripts(scripts_path=matlab_path)
+    #quit_all(engines=engines)
+    join_threads(threads=threads)
 
 
 if __name__ == '__main__':
