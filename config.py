@@ -1,0 +1,1 @@
+varz = ['jj', 'st', 'fin2', 'stf', 'finf', 'low', ]
