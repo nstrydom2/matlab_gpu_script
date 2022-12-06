@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+import json
 from pathlib import Path
 
 from PySide6.QtCore import QDateTime, QThreadPool, QRunnable
@@ -68,6 +69,46 @@ class MainWindow(QMainWindow):
         self.gsfact_fin_line = QLineEdit()
         self.gsfact_delta_line = QLineEdit()
         self.n_gpus_line = QLineEdit()
+        self.output_path_box = QLineEdit()
+
+
+        prev_file = Path(rf'C:\Users\sfous\Desktop\forex\nick\matlab_gpu_script\prev.json')
+        prev = None
+        if prev_file.exists():
+            with open(prev_file, 'r') as in_file:
+                prev = json.load(in_file)
+
+        if prev is not None:
+            self.jj_line.setText(str(prev['jj']))
+            self.st_line.setText(str(prev['st']))
+            self.fin2_line.setText(str(prev['fin2']))
+            self.stf_line.setText(str(prev['stf']))
+            self.finf_line.setText(str(prev['finf']))
+            self.low_line.setText(str(prev['low']))
+            self.high_line.setText(str(prev['high']))
+            self.gsfact1_line.setText(str(prev['gsfact1']))
+            self.dgs_line.setText(str(prev['dgs']))
+            self.dcy_line.setText(str(prev['dcy']))
+            self.dd_line.setText(str(prev['dd']))
+            self.dlr_line.setText(str(prev['dlr']))
+            self.l2_line.setText(str(prev['l2']))
+            self.cycles_st_line.setText(str(prev['cycles_st']))
+            self.cycles_fin_line.setText(str(prev['cycles_fin']))
+            self.cycles_delta_line.setText(str(prev['cycles_delta']))
+            self.days_st_line.setText(str(prev['days_st']))
+            self.days_fin_line.setText(str(prev['days_fin']))
+            self.days_delta_line.setText(str(prev['days_delta']))
+            self.cells_st_line.setText(str(prev['cells_st']))
+            self.cells_fin_line.setText(str(prev['cells_fin']))
+            self.cells_delta_line.setText(str(prev['cells_delta']))
+            self.lrate_st_line.setText(str(prev['lrate_st']))
+            self.lrate_fin_line.setText(str(prev['lrate_fin']))
+            self.lrate_delta.setText(str(prev['lrate_delta']))
+            self.gsfact_st_line.setText(str(prev['gsfact_st']))
+            self.gsfact_fin_line.setText(str(prev['gsfact_fin']))
+            self.gsfact_delta_line.setText(str(prev['gsfact_delta']))
+            self.n_gpus_line .setText(str(prev['n_gpus']))
+            self.output_path_box.setText(str(prev['output_path']))
 
         layout = QFormLayout()
         layout.addRow(QLabel("jj"), self.jj_line)
@@ -101,7 +142,6 @@ class MainWindow(QMainWindow):
         layout.addRow(QLabel("n_gpus"), self.n_gpus_line)
         self.var_group_box.setLayout(layout)
 
-        self.output_path_box = QLineEdit()
         layout.addRow(QLabel("Output Path"), self.output_path_box)
         self.body_layout.addWidget(self.var_group_box)
 
@@ -215,40 +255,51 @@ class MainWindow(QMainWindow):
         self.button1.setDisabled(True)
 
     def run_scanner(self):
-        self.disable_widgets()
-        self.set_busy_status()
+        # self.disable_widgets()
+        # self.set_busy_status()
 
         try:
-            jj = self.jj_line.text()
-            st = self.st_line.text()
-            fin2 = self.fin2_line.text()
-            stf = self.stf_line.text()
-            finf = self.finf_line.text()
-            low = self.low_line.text()
-            high = self.high_line.text()
-            gsfact1 = self.gsfact1_line.text()
-            dgs = self.dgs_line.text()
-            dcy = self.dcy_line.text()
-            dd = self.dd_line.text()
-            dlr = self.dlr_line.text()
-            l2 = self.l2_line.text()
-            cycles_st = self.cycles_st_line.text()
-            cycles_fin = self.cycles_fin_line.text()
-            cycles_delta = self.cycles_delta_line.text()
-            days_st = self.days_st_line.text()
-            days_fin = self.days_fin_line.text()
-            days_delta = self.days_delta_line.text()
-            cells_st = self.cells_st_line.text()
-            cells_fin = self.cells_fin_line.text()
-            cells_delta = self.cells_delta_line.text()
-            lrate_st = self.lrate_st_line.text()
-            lrate_fin = self.lrate_fin_line.text()
-            lrate_delta = self.lrate_delta.text()
-            gsfact_st = self.gsfact_st_line.text()
-            gsfact_fin = self.gsfact_fin_line.text()
-            gsfact_delta = self.gsfact_delta_line.text()
+            jj = int(self.jj_line.text())
+            st = int(self.st_line.text())
+            fin2 = int(self.fin2_line.text())
+            stf = int(self.stf_line.text())
+            finf = int(self.finf_line.text())
+            low = float(self.low_line.text())
+            high = float(self.high_line.text())
+            gsfact1 = int(self.gsfact1_line.text())
+            dgs = int(self.dgs_line.text())
+            dcy = int(self.dcy_line.text())
+            dd = int(self.dd_line.text())
+            dlr = int(self.dlr_line.text())
+            l2 = float(self.l2_line.text())
+            cycles_st = int(self.cycles_st_line.text())
+            cycles_fin = int(self.cycles_fin_line.text())
+            cycles_delta = int(self.cycles_delta_line.text())
+            days_st = int(self.days_st_line.text())
+            days_fin = int(self.days_fin_line.text())
+            days_delta = int(self.days_delta_line.text())
+            cells_st = int(self.cells_st_line.text())
+            cells_fin = int(self.cells_fin_line.text())
+            cells_delta = int(self.cells_delta_line.text())
+            lrate_st = int(self.lrate_st_line.text())
+            lrate_fin = int(self.lrate_fin_line.text())
+            lrate_delta = int(self.lrate_delta.text())
+            gsfact_st = int(self.gsfact_st_line.text())
+            gsfact_fin = int(self.gsfact_fin_line.text())
+            gsfact_delta = int(self.gsfact_delta_line.text())
             output_path = self.output_path_box.text()
-            n_qpus = self.n_gpus_line.text()
+            n_gpus = int(self.n_gpus_line.text())
+
+            prev_file = Path(rf'C:\Users\sfous\Desktop\forex\nick\matlab_gpu_script\prev.json')
+            with open(prev_file, 'w') as out_file:
+                save = dict(jj=jj, st=st, fin2=fin2, stf=stf, finf=finf, low=low, high=high, gsfact1=gsfact1,
+                            dgs=dgs, dcy=dcy, dd=dd, dlr=dlr, l2=l2, cycles_st=cycles_st,
+                            cycles_fin=cycles_fin, cycles_delta=cycles_delta, days_st=days_st,
+                            days_fin=days_fin, days_delta=days_delta, cells_st=cells_st, cells_fin=cells_fin,
+                            cells_delta=cells_delta, lrate_st=lrate_st, lrate_fin=lrate_fin,
+                            lrate_delta=lrate_delta, gsfact_st=gsfact_st, gsfact_fin=gsfact_fin,
+                            gsfact_delta=gsfact_delta, output_path=output_path, n_gpus=n_gpus)
+                json.dump(save, out_file)
 
             scan(output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr, l2, cycles_st,
                  cycles_fin, cycles_delta, days_st, days_fin, days_delta, cells_st, cells_fin, cells_delta,
@@ -256,8 +307,9 @@ class MainWindow(QMainWindow):
         except Exception as ex:
             print(f'[!] ERROR -- {ex}')
         finally:
-            self.set_ready_status()
-            self.enable_widgets()
+            pass
+            # self.set_ready_status()
+            # self.enable_widgets()
 
     def run_click(self):
         self.run_program()

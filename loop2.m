@@ -1,34 +1,34 @@
 function loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs, cycles, dcy, days, dd, lrate, dlr, cells, l2, igpu, rout)
 
-jj = 0
-st = 460
-fin2 = 517
-stf = 10
-finf = 10
-low = .04
-high = 1
-gsfact1 = 0.9
-dgs = 0.2
-dcy = 50
-dd = 20
-dlr = 0
-l2 = 0
-
-cycles_st = 1100
-cycles_fin = 900
-cycles_delta = -50
-days_st = 1
-days_fin = 150
-days_delta = 1
-cells_st = 350
-cells_fin = 240
-cells_delta = -30
-lrate_st = 8
-lrate_fin = 5
-lrate_delta = -1
-gsfact_st = 7
-gsfact_fin = 8
-gsfact_delta = 1
+% jj = 0
+% st = 460
+% fin2 = 517
+% stf = 10
+% finf = 10
+% low = .04
+% high = 1
+% gsfact1 = 0.9
+% dgs = 0.2
+% dcy = 50
+% dd = 20
+% dlr = 0
+% l2 = 0
+% 
+% cycles_st = 1100
+% cycles_fin = 900
+% cycles_delta = -50
+% days_st = 1
+% days_fin = 150
+% days_delta = 1
+% cells_st = 350
+% cells_fin = 240
+% cells_delta = -30
+% lrate_st = 8
+% lrate_fin = 5
+% lrate_delta = -1
+% gsfact_st = 7
+% gsfact_fin = 8
+% gsfact_delta = 1
 
 
 % aiload v1
@@ -46,7 +46,7 @@ gsfact_delta = 1
 %finf=8;
 
 forw=0;
- rout='C:\Users\sfous\Desktop\forex\2year\rtest8aaz.csv';
+ %rout='C:\Users\sfous\Desktop\forex\2year\rtest8aaz.csv';
 low=.001;
 high=1;
 rng('default');  % initilize the net work ???????????????
@@ -292,8 +292,8 @@ rng('default');
                         win=0;
                         lose=0;
                         [win,lose,resout1]=tally(igpu,gsfact,m2,rout,fin2,snfai,afile,resout1,win,lose,st,k,cycles,days,lrate,cells,low,high);
-    fmt='%3.0f file=%2.0f win=%2.0f lose=%2.0f  %2.3f %3.3f %1.0f %4.0f days%3.0f lrate%0.3f cell%3.0f l %0.3f h %0.3f \n';
-    fprintf(fmt,k,afile,win,lose,100*(win-lose)/(win+lose),toc/60,3,cycles,days,lrate,cells,low,high);
+    fmt='%3.0f file=%2.0f win=%2.0f lose=%2.0f  %2.3f %3.3f %1.0f %4.0f days%3.0f lrate%0.3f cell%3.0f l %0.3f h %0.3f igpu %3.0f \n';
+    fprintf(fmt,k,afile,win,lose,100*(win-lose)/(win+lose),toc/60,3,cycles,days,lrate,cells,low,high,igpu);
 
                     end % st fin2 days
                 end % stf finf  files
@@ -385,8 +385,8 @@ if i==fin2
     m2(1,8)=cells;
     m2(1,9)=low;
     m2(1,10)=gsfact;
-    m2(1,11)=igpu;     % TODO: print me out
-    m2(1,12)=230;  % 2 for shuffle and 1 for default or 0 ,3 is for clear net and shuffle    % TODO: print me out
+    m2(1,11)=igpu;
+    m2(1,12)=230;  % 2 for shuffle and 1 for default or 0 ,3 is for clear net and shuffle
     if isfile(rout)
         writematrix(m2,rout,'WriteMode','append');
     else
