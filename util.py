@@ -22,13 +22,14 @@ def quit_all(engines: list):
     [eng.quit() for eng in engines]
 
 
-def run_scripts(scripts_path: Path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr,
+def run_scripts(scripts_path: Path, output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr,
                 l2, cycles_st, cycles_fin, cycles_delta, days_st, days_fin, days_delta, cells_st,
                 cells_fin, cells_delta, lrate_st, lrate_fin, lrate_delta, gsfact_st, gsfact_fin,
                 gsfact_delta):
     sys.path.insert(1, str(scripts_path))
 
     engines = []
+    rout = output_path
     combs = generate_combinations(cycles_st, cycles_fin, cycles_delta, days_st, days_fin, days_delta,
                                   cells_st, cells_fin, cells_delta, lrate_st, lrate_fin, lrate_delta,
                                   gsfact_st, gsfact_fin, gsfact_delta)
@@ -37,16 +38,16 @@ def run_scripts(scripts_path: Path, jj, st, fin2, stf, finf, low, high, gsfact1,
         engines.append(eng)
 
         eng.loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs,
-                  dcy, day, dd, lrate, dlr, nargout=0)
+                  dcy, day, dd, lrate, dlr, igpu, rout, nargout=0)
 
     return engines
 
 
-def scan(jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr, l2, cycles_st,
+def scan(output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr, l2, cycles_st,
          cycles_fin, cycles_delta, days_st, days_fin, days_delta, cells_st, cells_fin, cells_delta,
          lrate_st, lrate_fin, lrate_delta, gsfact_st, gsfact_fin, gsfact_delta):
     matlab_path = Path('C:/Users/Nick/PycharmProjects/matlab_script')
-    engines = run_scripts(matlab_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr,
+    engines = run_scripts(matlab_path, output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr,
                           l2, cycles_st, cycles_fin, cycles_delta, days_st, days_fin, days_delta,
                           cells_st, cells_fin, cells_delta, lrate_st, lrate_fin, lrate_delta, gsfact_st,
                           gsfact_fin, gsfact_delta)

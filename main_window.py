@@ -111,9 +111,9 @@ class MainWindow(QMainWindow):
         # output_layout.addWidget(self.file_button)
         # self.body_layout.addLayout(output_layout)
 
-        self.button1 = QPushButton("Save")
+        self.button1 = QPushButton("Start")
         self.button1.move(10, 20)
-        self.button1.clicked.connect(self.save_click)
+        self.button1.clicked.connect(self.run_click)
         self.body_layout.addWidget(self.button1)
 
         button2 = QPushButton("Quit")
@@ -170,12 +170,11 @@ class MainWindow(QMainWindow):
         self.setStatusBar(self.status_bar)
 
     def run_program(self):
-        pass
         # pool = QThreadPool.globalInstance()
         # main_worker = Worker(self.save)
         #
         # pool.start(main_worker)
-        #self.save()
+        self.run_scanner()
 
     def enable_widgets(self):
         self.name_box.setEnabled(True)
@@ -246,8 +245,9 @@ class MainWindow(QMainWindow):
             gsfact_st = self.gsfact_st_line.text()
             gsfact_fin = self.gsfact_fin_line.text()
             gsfact_delta = self.gsfact_delta_line.text()
+            output_path = self.output_path_box.text()
 
-            scan(jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr, l2, cycles_st,
+            scan(output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr, l2, cycles_st,
                  cycles_fin, cycles_delta, days_st, days_fin, days_delta, cells_st, cells_fin, cells_delta,
                  lrate_st, lrate_fin, lrate_delta, gsfact_st, gsfact_fin, gsfact_delta)
         except Exception as ex:
@@ -256,7 +256,7 @@ class MainWindow(QMainWindow):
             self.set_ready_status()
             self.enable_widgets()
 
-    def save_click(self):
+    def run_click(self):
         self.run_program()
 
     def quit_click(self):
