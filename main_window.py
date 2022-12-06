@@ -67,6 +67,7 @@ class MainWindow(QMainWindow):
         self.gsfact_st_line = QLineEdit()
         self.gsfact_fin_line = QLineEdit()
         self.gsfact_delta_line = QLineEdit()
+        self.n_gpus_line = QLineEdit()
 
         layout = QFormLayout()
         layout.addRow(QLabel("jj"), self.jj_line)
@@ -97,6 +98,7 @@ class MainWindow(QMainWindow):
         layout.addRow(QLabel("gsfact_st"), self.gsfact_st_line)
         layout.addRow(QLabel("gsfact_fin"), self.gsfact_fin_line)
         layout.addRow(QLabel("gsfact_delta"), self.gsfact_delta_line)
+        layout.addRow(QLabel("n_gpus"), self.n_gpus_line)
         self.var_group_box.setLayout(layout)
 
         self.output_path_box = QLineEdit()
@@ -246,10 +248,11 @@ class MainWindow(QMainWindow):
             gsfact_fin = self.gsfact_fin_line.text()
             gsfact_delta = self.gsfact_delta_line.text()
             output_path = self.output_path_box.text()
+            n_qpus = self.n_gpus_line.text()
 
             scan(output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr, l2, cycles_st,
                  cycles_fin, cycles_delta, days_st, days_fin, days_delta, cells_st, cells_fin, cells_delta,
-                 lrate_st, lrate_fin, lrate_delta, gsfact_st, gsfact_fin, gsfact_delta)
+                 lrate_st, lrate_fin, lrate_delta, gsfact_st, gsfact_fin, gsfact_delta, n_gpus)
         except Exception as ex:
             print(f'[!] ERROR -- {ex}')
         finally:

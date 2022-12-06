@@ -22,10 +22,14 @@ def quit_all(engines: list):
     [eng.quit() for eng in engines]
 
 
+def chunks(seq, size):
+    return [seq[i::size] for i in range(size)]
+
+
 def run_scripts(scripts_path: Path, output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr,
                 l2, cycles_st, cycles_fin, cycles_delta, days_st, days_fin, days_delta, cells_st,
                 cells_fin, cells_delta, lrate_st, lrate_fin, lrate_delta, gsfact_st, gsfact_fin,
-                gsfact_delta):
+                gsfact_delta, n_gpus):
     sys.path.insert(1, str(scripts_path))
 
     engines = []
@@ -33,22 +37,25 @@ def run_scripts(scripts_path: Path, output_path, jj, st, fin2, stf, finf, low, h
     combs = generate_combinations(cycles_st, cycles_fin, cycles_delta, days_st, days_fin, days_delta,
                                   cells_st, cells_fin, cells_delta, lrate_st, lrate_fin, lrate_delta,
                                   gsfact_st, gsfact_fin, gsfact_delta)
-    for cycle, day, cell, lrate, gsfact in combs:
-        eng = matlab.start_matlab()
-        engines.append(eng)
+    chunkz = list(chunks(combs, n_gpus))
+    for idx, chunk in enumerate(chunkz):
+        for cycle, day, cell, lrate, gsfact in chunk:
+            eng = matlab.start_matlab()
+            engines.append(eng)
 
-        eng.loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs,
-                  dcy, day, dd, lrate, dlr, igpu, rout, nargout=0)
+            igpu = idx + 1
+            eng.loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs,
+                      dcy, day, dd, lrate, dlr, igpu, rout, nargout=0)
 
     return engines
 
 
 def scan(output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr, l2, cycles_st,
          cycles_fin, cycles_delta, days_st, days_fin, days_delta, cells_st, cells_fin, cells_delta,
-         lrate_st, lrate_fin, lrate_delta, gsfact_st, gsfact_fin, gsfact_delta):
+         lrate_st, lrate_fin, lrate_delta, gsfact_st, gsfact_fin, gsfact_delta, n_gpus):
     matlab_path = Path('C:/Users/Nick/PycharmProjects/matlab_script')
     engines = run_scripts(matlab_path, output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr,
                           l2, cycles_st, cycles_fin, cycles_delta, days_st, days_fin, days_delta,
                           cells_st, cells_fin, cells_delta, lrate_st, lrate_fin, lrate_delta, gsfact_st,
-                          gsfact_fin, gsfact_delta)
+                          gsfact_fin, gsfact_delta, n_gpus)
     quit_all(engines=engines)
