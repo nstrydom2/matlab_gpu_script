@@ -85,7 +85,7 @@ def run_scripts(scripts_path: Path, output_path, jj, st, fin2, stf, finf, low, h
 def scan(output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr, l2, cycles_st,
          cycles_fin, cycles_delta, days_st, days_fin, days_delta, cells_st, cells_fin, cells_delta,
          lrate_st, lrate_fin, lrate_delta, gsfact_st, gsfact_fin, gsfact_delta, n_gpus):
-    matlab_path = Path('C:/Users/Nick/PycharmProjects/matlab_script')
+    matlab_path = Path('C:/Users/User/Desktop/forex/nick/matlab_gpu_script')
     engines = run_scripts(matlab_path, output_path, jj, st, fin2, stf, finf, low, high, gsfact1, dgs, dcy, dd, dlr,
                           l2, cycles_st, cycles_fin, cycles_delta, days_st, days_fin, days_delta,
                           cells_st, cells_fin, cells_delta, lrate_st, lrate_fin, lrate_delta, gsfact_st,

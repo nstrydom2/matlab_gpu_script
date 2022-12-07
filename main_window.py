@@ -72,7 +72,7 @@ class MainWindow(QMainWindow):
         self.output_path_box = QLineEdit()
 
 
-        prev_file = Path(rf'C:\Users\sfous\Desktop\forex\nick\matlab_gpu_script\prev.json')
+        prev_file = Path('C:/Users/User/Desktop/forex/nick/matlab_gpu_script/prev.json')
         prev = None
         if prev_file.exists():
             with open(prev_file, 'r') as in_file:
@@ -290,7 +290,7 @@ class MainWindow(QMainWindow):
             output_path = self.output_path_box.text()
             n_gpus = int(self.n_gpus_line.text())
 
-            prev_file = Path(rf'C:\Users\sfous\Desktop\forex\nick\matlab_gpu_script\prev.json')
+            prev_file = Path('C:/Users/User/Desktop/forex/nick/matlab_gpu_script/prev.json')
             with open(prev_file, 'w') as out_file:
                 save = dict(jj=jj, st=st, fin2=fin2, stf=stf, finf=finf, low=low, high=high, gsfact1=gsfact1,
                             dgs=dgs, dcy=dcy, dd=dd, dlr=dlr, l2=l2, cycles_st=cycles_st,
