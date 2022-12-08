@@ -27,7 +27,7 @@ def generate_combinations(cycles_st, cycles_fin, cycles_delta, days_st, days_fin
     gsfact_fin += 1 if gsfact_st == gsfact_fin else 0
     gsfacts = [0.1 * x for x in range(gsfact_st, gsfact_fin, gsfact_delta)]
 
-    result = list(itertools.product(cycles, days, cells, lrates, gsfacts))
+    result = list(itertools.product(gsfacts, lrates, cells, days, cycles))
     return result
 
 
@@ -54,9 +54,10 @@ def run_scripts(scripts_path: Path, output_path, jj, st, fin2, stf, finf, low, h
     chunkz = list(chunks(combs, n_gpus))
     for idx, fchunk in enumerate(chunkz):
         def worker(chunk, igpu):
+            size_chunks = len(chunkz)
             for chunk_idx, chunk_tuple in enumerate(chunk):
                 random.seed(int(time.time()))
-                sleep_rand = random.randint(2, 6)
+                sleep_rand = random.randint(4, 6)
                 time.sleep(sleep_rand)
 
                 cycles, days, cells, lrate, gsfact = chunk_tuple
@@ -67,9 +68,10 @@ def run_scripts(scripts_path: Path, output_path, jj, st, fin2, stf, finf, low, h
                 eng = matlab.start_matlab()
                 engines.append(eng)
 
+                progress = (chunk_idx / size_chunks) * 100
                 eng.loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs,
                           cycles, dcy, days, dd, lrate, dlr, cells, l2,
-                          igpu, rout, nargout=0)
+                          igpu, rout, chunk_idx, size_chunks, progress, nargout=0)
 
         time.sleep(2)
         t = Thread(target=worker, args=(fchunk, idx+1))
