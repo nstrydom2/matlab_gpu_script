@@ -56,22 +56,26 @@ def run_scripts(scripts_path: Path, output_path, jj, st, fin2, stf, finf, low, h
         def worker(chunk, igpu):
             size_chunks = len(chunkz)
             for chunk_idx, chunk_tuple in enumerate(chunk):
+                hidx = chunk_idx
+
                 random.seed(int(time.time()))
                 sleep_rand = random.randint(4, 6)
                 time.sleep(sleep_rand)
 
-                cycles, days, cells, lrate, gsfact = chunk_tuple
+                gsfact, lrate, cells, days, cycles = chunk_tuple
 
-                chunk_idx += len(chunk) * idx if idx > 0 else 0
+                hidx += len(chunk) * idx if idx > 0 else 0
                 print(f'Hash idx = {chunk_idx}')
 
                 eng = matlab.start_matlab()
                 engines.append(eng)
 
-                progress = (chunk_idx / size_chunks) * 100
-                eng.loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs,
+                progress = (hidx / size_chunks) * 100
+                chunk_size = len(chunk)
+                eng.loop7(jj, st, fin2, stf, finf, high, low, gsfact, dgs,
                           cycles, dcy, days, dd, lrate, dlr, cells, l2,
-                          igpu, rout, chunk_idx, size_chunks, progress, nargout=0)
+                          igpu, rout, hidx, progress, chunk_size, nargout=0)
+                eng.quit()
 
         time.sleep(2)
         t = Thread(target=worker, args=(fchunk, idx+1))
