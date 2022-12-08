@@ -1,4 +1,4 @@
-function loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs, cycles, dcy, days, dd, lrate, dlr, cells, l2, igpu, hidx)
+function loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs, cycles, dcy, days, dd, lrate, dlr, cells, l2, igpu, rout, hidx, progress, chunk_size)
 
 
 % aiload v1
@@ -91,14 +91,14 @@ names=sheetnames(fname);
     resout1=zeros(fin,10,14);
    ggtotal=0;
 % loops start here 
-gsfact=.9;
-dgs=.2;
-cycles=100;
-dcy=50;  % cyclest +50 5 steps
-days=80;
-dd=20;  % days 20,40,60,60,100
-lrate=.006; 
-dlr=.001; % 3 steps .003 .006 .009
+%gsfact=.9;
+%dgs=.2;
+%cycles=100;
+%dcy=50;  % cyclest +50 5 steps
+%days=80;
+%dd=20;  % days 20,40,60,60,100
+%lrate=.006;
+%dlr=.001; % 3 steps .003 .006 .009
 tic;
 %for cycles=450:50:550
     
@@ -241,7 +241,7 @@ aint=ain(:,:); % input for i
                             LearnRateDropFactor=0.4, ...
                             SquaredGradientDecayFactor=gsfact, ...
                             InitialLearnRate=lrate, ....
-                            Verbose=true, ...
+                            Verbose=false, ...
                             ValidationData={bin(:,k+1),bout(k+1)}, ...
                             ValidationFrequency=50);
                         % ...
