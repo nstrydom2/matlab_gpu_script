@@ -23,17 +23,17 @@ reset(b1);
 % parpool('local',igpu)
 m2=zeros(1,13);
 
-fname="C:\Users\User\Desktop\forex\2year\for1.xls";  % change back to for1
+fname="C:\Users\sfous\Desktop\forex\2year\for2.xls";  % change back to for1
 rtfname="C:\Users\User\Desktop\forex\2year\testba.xlsx"; % day oanda data
-rtnames=sheetnames(rtfname);
+%rtnames=sheetnames(rtfname);
 names=sheetnames(fname);
    for ifile=1:length(names)
         t = readtable(fname,'sheet',names(ifile,1),'PreserveVariableNames',true);
         t([1],:)=[];  % remove row 1 of headers in vp      
         sn=zeros(height(t),19);
-  snfa1=zeros(height(t),19,length(names));
+  snfai=zeros(height(t),19,length(names));
  snf21ai=zeros(height(t),3,length(names));
-        rt= readtable(rtfname,'sheet',rtnames(ifile,1),'PreserveVariableNames',true,'Format','auto');   
+    %    rt= readtable(rtfname,'sheet',rtnames(ifile,1),'PreserveVariableNames',true,'Format','auto');
         %
         %
         %
@@ -46,10 +46,10 @@ names=sheetnames(fname);
             sn(i,2)=t{i,22};
 
             % mid from vp
-            sn(i,3)=rt{i,3};    %  open  rt3   t4
-            sn(i,4)=rt{i,4};    %  close rt4   t5 
-            sn(i,5)=rt{i,5};    %  high  rt5   t6
-            sn(i,6)=rt{i,6};    %  low   rt6   t7
+            sn(i,3)=t{i,4};    %  open  rt3   t4
+            sn(i,4)=t{i,5};    %  close rt4   t5
+            sn(i,5)=t{i,6};    %  high  rt5   t6
+            sn(i,6)=t{i,7};    %  low   rt6   t7
  
             sn(i,7)=t{i,8};
             sn(i,8)=t{i,9};
