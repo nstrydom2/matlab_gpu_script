@@ -1,6 +1,6 @@
-function loop2(jj, st, fin2, stf, finf, high, low, gsfact, dgs, cycles, dcy, days, dd, lrate, dlr, cells, l2, igpu, rout, hidx, progress, chunk_size)
+function loop7(jj, st, fin2, stf, finf, high, low, gsfact, dgs, cycles, dcy, days, dd, lrate, dlr, cells, l2, igpu, rout, hidx, progress, chunk_size)
 
-
+%mt='
 % aiload v1
 % 8/13/22 4 inputs
 %  
@@ -23,11 +23,11 @@ reset(b1);
 % parpool('local',igpu)
 m2=zeros(1,13);
 
-fname="C:\Users\sfous\Desktop\forex\2year\for2.xls";  % change back to for1
+fname="C:\Users\User\Desktop\forex\2year\for2.xls";  % change back to for1
 rtfname="C:\Users\User\Desktop\forex\2year\testba.xlsx"; % day oanda data
 %rtnames=sheetnames(rtfname);
 names=sheetnames(fname);
-   for ifile=1:length(names)
+   for ifile=stf:finf
         t = readtable(fname,'sheet',names(ifile,1),'PreserveVariableNames',true);
         t([1],:)=[];  % remove row 1 of headers in vp      
         sn=zeros(height(t),19);

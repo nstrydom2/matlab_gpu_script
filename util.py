@@ -12,19 +12,19 @@ from threading import Thread
 def generate_combinations(cycles_st, cycles_fin, cycles_delta, days_st, days_fin, days_delta, cells_st,
                           cells_fin, cells_delta, lrate_st, lrate_fin, lrate_delta, gsfact_st, gsfact_fin,
                           gsfact_delta):
-    cycles_fin += 1 if cycles_st == cells_fin else 0
+    cycles_fin += 1
     cycles = [x for x in range(cycles_st, cycles_fin, cycles_delta)]
 
-    days_fin += 1 if days_st == days_fin else 0
+    days_fin += 1
     days = [x for x in range(days_st, days_fin, days_delta)]
 
-    cells_fin += 1 if cells_st == cells_fin else 0
+    cells_fin += 1
     cells = [x for x in range(cells_st, cells_fin, cells_delta)]
 
-    lrate_fin += 1 if lrate_st == lrate_fin else 0
+    lrate_fin += 1
     lrates = [x * 0.001 for x in range(lrate_st, lrate_fin, lrate_delta)]
 
-    gsfact_fin += 1 if gsfact_st == gsfact_fin else 0
+    gsfact_fin += 1
     gsfacts = [0.1 * x for x in range(gsfact_st, gsfact_fin, gsfact_delta)]
 
     result = list(itertools.product(gsfacts, lrates, cells, days, cycles))
@@ -57,12 +57,13 @@ def run_scripts(scripts_path: Path, output_path, jj, st, fin2, stf, finf, low, h
             size_chunks = len(chunkz)
             eng = matlab.start_matlab()
             engines.append(eng)
+
+            random.seed(int(time.time()))
+            sleep_rand = random.randint(4, 6)
+            time.sleep(sleep_rand)
+
             for chunk_idx, chunk_tuple in enumerate(chunk):
                 hidx = chunk_idx
-
-                random.seed(int(time.time()))
-                sleep_rand = random.randint(4, 6)
-                time.sleep(sleep_rand)
 
                 gsfact, lrate, cells, days, cycles = chunk_tuple
 
